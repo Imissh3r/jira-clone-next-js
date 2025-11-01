@@ -15,6 +15,7 @@ export const useCreateWorkspace = () => {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ form }) => {
       const response = await client.api.workspaces.$post({ form });
+      console.log(response);
       return await response.json();
     },
     onSuccess: () => {
@@ -22,8 +23,9 @@ export const useCreateWorkspace = () => {
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
     },
-    onError: () => {
+    onError: (error: any) => {
       toast.error("Failed to create workspace.");
+      console.log(error.message);
     },
   });
 

@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { endOfMonth, startOfMonth, subMonths } from "date-fns";
 import { Hono } from "hono";
-import { ID, Query } from "node-appwrite";
+import { ID, Query, Permission, Role } from "node-appwrite";
 import { z } from "zod";
 
 import {
@@ -102,10 +102,12 @@ const app = new Hono()
         const file = await storage.createFile(
           IMAGES_BUCKET_ID,
           ID.unique(),
-          image
+          image,
+          [Permission.read(Role.any())]
         );
 
-        const arrayBuffer = await storage.getFilePreview(
+        // Changed getFilePreview to getFileView for testing
+        const arrayBuffer = await storage.getFileView(
           IMAGES_BUCKET_ID,
           file.$id
         );
@@ -113,7 +115,16 @@ const app = new Hono()
         uploadedImageUrl = `data:image/png;base64,${Buffer.from(
           arrayBuffer
         ).toString("base64")}`;
+
       }
+
+      // Logs for testing
+      console.log("🧩 Creating workspace with:", {
+        name,
+        userId: user?.$id,
+        imageUrl: uploadedImageUrl,
+        inviteCode: generateInviteCode(6),
+      });
 
       const workspace = await databases.createDocument(
         DATABASE_ID,
@@ -164,10 +175,12 @@ const app = new Hono()
         const file = await storage.createFile(
           IMAGES_BUCKET_ID,
           ID.unique(),
-          image
+          image,
+          [Permission.read(Role.any())]
         );
 
-        const arrayBuffer = await storage.getFilePreview(
+        // Changed getFilePreview to getFileView for testing
+        const arrayBuffer = await storage.getFileView(
           IMAGES_BUCKET_ID,
           file.$id
         );
@@ -175,6 +188,7 @@ const app = new Hono()
         uploadedImageUrl = `data:image/png;base64,${Buffer.from(
           arrayBuffer
         ).toString("base64")}`;
+
       } else {
         uploadedImageUrl = image;
       }

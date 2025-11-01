@@ -201,6 +201,7 @@ const app = new Hono()
           dueDate,
           assigneeId,
           position: newPosition,
+          userId: user.$id,
         }
       );
 

@@ -16,7 +16,7 @@ const StandaloneLayout = ({ children }: StandaloneLayoutProps) => {
             <Link href="/">
               <Image src="/logo.svg" alt="logo" width={50} height={39} />
             </Link>
-            <p className="font-bold text-lg">Jira Clone</p>
+            <p className="font-bold text-lg">Project Tracking System</p>
           </div>
           <UserButton />
         </nav>

@@ -62,6 +62,7 @@ const app = new Hono()
           name,
           imageUrl: uploadedImageUrl,
           workspaceId,
+          userId: user.$id,
         }
       );
 
